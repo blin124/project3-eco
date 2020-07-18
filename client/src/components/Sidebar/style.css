@@ -1,0 +1,11 @@
+aside
+{
+    position: absolute;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.sidebar {
+    background-color:rgb(5, 104, 185);
+}
