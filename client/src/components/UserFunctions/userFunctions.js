@@ -2,9 +2,9 @@ import axios from 'axios';
 
 let serverUrl = "http://localhost:5001"
 // (change serverUrl on heroku)
-// if (process.env.NODE_ENV === "production") {
-//     serverUrl = 'https://pure-wave-73002.herokuapp.com/';
-// }
+if (process.env.NODE_ENV === "production") {
+    serverUrl = 'https://afternoon-coast-88401.herokuapp.com/';
+}
 
 export const registerUser = userData => {
     // console.log(userData);
