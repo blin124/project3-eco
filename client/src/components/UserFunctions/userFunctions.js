@@ -29,6 +29,7 @@ export const loginUser = userData => {
     })
     .then(res => {
         localStorage.setItem('usertoken', res.data);
+        
         return res.data;
     })
     .catch(err => {

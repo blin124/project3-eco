@@ -3,6 +3,11 @@ const Schema = mongoose.Schema;
 
 // Create Schema
 const UserSchema = new Schema({
+  // user_id: {
+  //   type: Schema.Types.ObjectId,
+  //   required: true,
+  //   ref: "User"
+  // },
   first_name: {
     type: String,
     required: true
@@ -18,12 +23,8 @@ const UserSchema = new Schema({
   password: {
     type: String,
     required: true
-  },
-  date: {
-    type: Date,
-    default: Date.now
   }
-});
+}, {timestamps: true});
 
 const User = mongoose.model("users", UserSchema);
 

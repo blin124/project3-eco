@@ -1,12 +1,12 @@
 const express = require("express");
 const cors = require('cors');
 const logger = require("morgan");
-const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const routes = require("./routes");
 const passport = require("passport");
 const app = express();
 const dotenv = require("dotenv");
+const database = require('./config/database');
 
 dotenv.config();
 
@@ -31,17 +31,8 @@ app.use(
 );
 
 app.use(express.static("public"));
-// DB Config
-const MONGODB_URI = ""
-const mongoURI = "mongodb://localhost/login";
 
-// Connect to MongoDB
-mongoose.connect( MONGODB_URI || mongoURI, {
-  useNewUrlParser: true,
-  useFindAndModify: false
-})
-.then(() => console.log("MongoDB successfully connected"))
-.catch(err => console.log(err));
+database(); // connect to db
 
 // Passport middleware
 app.use(passport.initialize());

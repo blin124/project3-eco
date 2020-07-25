@@ -9,15 +9,20 @@ import Dashboard from "./components/pages/Dashboard/Dashboard";
 import Other from "./components/pages/Other/Other";
 import Profile from "./components/Profile/profile";
 import Shop from "./components/pages/Shop/shop";
+import Cart from "./components/pages/Cart/cart";
+// import Admin from "./layout/Admin";
 
 import "./App.css";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import GlobalStore from "./utils/context/GlobalStore";
 
 
 class App extends Component {
+
     render() {
         return (
+            <GlobalStore.GlobalProvider>
                 <Router>
                     <div className="container-fluid pl-0 pr-0 m-0">
                         <Navbar />
@@ -29,9 +34,11 @@ class App extends Component {
                             <Route exact path="/dashboard" component={Dashboard} />
                             <Route exact path="/other" component={Other} />
                             <Route exact path="/shop" component={Shop} />
+                            <Route exact path="/cart" component={Cart} />
                         </div>
                     </div>
                 </Router>
+            </GlobalStore.GlobalProvider>
         );
     }
 }
