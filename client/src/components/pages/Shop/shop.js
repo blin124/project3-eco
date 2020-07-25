@@ -18,13 +18,17 @@ function Shop(props) {
     useEffect(() => {
         loadProducts()
         setCount(1)
+        loadLocalStorage()
     }, [])
+
+    function loadLocalStorage() {
+        store.auth.authState.isLoggedIn=localStorage.getItem('usertoken') !== null;
+    }
 
   // products --
   // Loads all Products and sets them to Products
     function loadProducts() {
-        console.log( "hi this aint working"
-        );
+        // console.log( "hi this aint working");
         API.getProducts()
         .then(res => 
             setProducts(res.data)
@@ -54,24 +58,24 @@ function Shop(props) {
                                 <th scope="col">Product</th>
                                 <th scope="col">Description</th>
                                 <th scope="col">Price</th>
-                                {/* {store.auth.authState.isLoggedIn && ( */}
+                                {store.auth.authState.isLoggedIn && (
                                     <th scope="col">Action</th>
-                                {/* )} */}
+                                )}
                                 </tr>
                             </thead>
                             <tbody>
                             {/* products */}
-                                {console.log(products)}
+                                {/* {console.log(products)} */}
                                 {products.map(product => {
                                 return (
                                     <tr>
                                     <td scope="row">{product.name}</td>
                                     <td scope="row">description</td>
                                     <td scope="row">$ {product.price}</td>
-                                    {/* {store.auth.authState.isLoggedIn && ( */}
+                                    {store.auth.authState.isLoggedIn && (
                                         <td scope="row"><button className="btn" onClick={addToCart}>Add to cart</button></td>
                                    
-                                    {/* )} */}
+                                    )}
                                     </tr>
                                 );
                                 })}

@@ -48,6 +48,10 @@ class Profile extends Component {
                                     <td>Email</td>
                                     <td>{this.state.email}</td>
                                 </tr>
+                                <tr>
+                                    <td>Credits</td>
+                                    <td>$ 1000</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
