@@ -3,56 +3,25 @@ import { loginUser } from '../UserFunctions/userFunctions';
 import GlobalStore from "../../utils/context/GlobalStore";
 
 class Login extends Component {
-    // const [email, setEmail] = useState('');
-    // const [password, setPassword] = useState('');
-    // const [user, setUser] = useState('');
 
     // const store = GlobalStore.useGlobalContext()
-// step 1 - change component into functional component 
+// step 1 - change component into functional component -- fixed
 // step 2 - think how to add items to cart - depends on model hmmm.... find a way to add a cart to users
 
-    // function contructor() {
-    //     super()
-    //     email;
-    //     password;
-    //     onChange()
-    //     onSubmit()
-    // }
-    componentDidMount () {
-        // super()
-        this.state = {
+    constructor () {
+        super()
+         this.state = {
             email: '',
             password: ''
-        }
+        };
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
     }
 
-    // function onChange(e) {
-    //     setState({ [e.target.name]: e.target.value });
-    // }
     onChange(e) {
         this.setState({ [e.target.name]: e.target.value });
     }
 
-    // function onSubmit(e) {
-    //     e.preventDefault();
-    //         setUser = {
-    //             setEmail,
-    //             setPassword
-    //     }
-
-    //     loginUser(user).then(res => {
-    //         // ideally inside response we want user_id
-    //         console.log(res);
-    //         store.auth.dispatchAuth({type:'set-user', payload: res.data})
-    //         if(res) {
-    //             props.history.push('/dashboard');
-    //         }
-    //         else {
-    //             console.log("Incorrect email or password");
-    //     }
-    // }
     onSubmit(e) {
         e.preventDefault();
         const user = {
@@ -107,9 +76,8 @@ class Login extends Component {
                 </div>
             </div>
         </div>
-    )
-}
-    
+        )
+    }    
 }
 
 export default Login;

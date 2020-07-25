@@ -54,9 +54,9 @@ function Shop(props) {
                                 <th scope="col">Product</th>
                                 <th scope="col">Description</th>
                                 <th scope="col">Price</th>
-                                {store.auth.authState.isLoggedIn && (
+                                {/* {store.auth.authState.isLoggedIn && ( */}
                                     <th scope="col">Action</th>
-                                )}
+                                {/* )} */}
                                 </tr>
                             </thead>
                             <tbody>
@@ -68,10 +68,10 @@ function Shop(props) {
                                     <td scope="row">{product.name}</td>
                                     <td scope="row">description</td>
                                     <td scope="row">$ {product.price}</td>
-                                    {store.auth.authState.isLoggedIn && (
+                                    {/* {store.auth.authState.isLoggedIn && ( */}
                                         <td scope="row"><button className="btn" onClick={addToCart}>Add to cart</button></td>
                                    
-                                    )}
+                                    {/* )} */}
                                     </tr>
                                 );
                                 })}

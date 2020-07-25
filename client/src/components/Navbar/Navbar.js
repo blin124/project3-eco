@@ -1,16 +1,18 @@
-import React, { Component } from "react";
+import React from "react";
 import { Link, withRouter } from "react-router-dom";
 import "./style.css";
 import GlobalStore from "../../utils/context/GlobalStore";
 
+
 function Navbar (props) {
+    const store = GlobalStore.useGlobalContext()
+    console.log({store}, "storeclg");
+
     function logOut(e) {
-
-        const store = GlobalStore.useGlobalContext()
-
+        e.preventDefault();
+        
         store.auth.dispatchAuth({type:'clear-user'});
 
-        e.preventDefault();
         localStorage.removeItem('usertoken');
 
         props.history.push('/');

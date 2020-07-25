@@ -29,7 +29,7 @@ export const loginUser = userData => {
     })
     .then(res => {
         localStorage.setItem('usertoken', res.data);
-        
+
         return res.data;
     })
     .catch(err => {
@@ -49,4 +49,8 @@ export const getUsers = userData => {
     .catch(err => {
         console.log(err);
     })
+}
+
+export const isUserLoggedIn = () => {
+    return localStorage.getItem('usertoken')
 }
