@@ -1,13 +1,13 @@
 // DB Config
 const mongoose = require("mongoose");
 
-const MONGODB_URI = process.env.MONGODB_URI;
-const mongoURI = "mongodb://admin:secret1@ds059165.mlab.com:59165/heroku_9r0p3wvn"
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/pro3';
+
 
 function connectDb(){
 
     // Connect to MongoDB
-    mongoose.connect( MONGODB_URI || mongoURI, {
+    mongoose.connect( MONGODB_URI, {
       useNewUrlParser: true,
       useFindAndModify: false
     })

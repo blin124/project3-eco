@@ -11,25 +11,18 @@ async function seedData() {
     for (let index = 0; index < 50; index++) {
     
 
-        let randomUser = await getRandomModel('User')
-
-        let p = []
-
-        for (let i = 0; i < 3; i++) {
-            let randomProduct = await getRandomModel('Product')
-            
-            p.push(randomProduct)
-        }
+        let randomCart= await getRandomModel('Cart')
+        
+        console.log({randomCart});
         
         const order = new Order({
-            products: [
-                p
-            ],
-            user_id: randomUser._id,
+            cart_id: randomCart._id,
             status: "orderpending"
         })
     
-        Order.create(order)
+        const created = await Order.create(order)
+
+        randomCart.order_id = created._id
 
     }
 

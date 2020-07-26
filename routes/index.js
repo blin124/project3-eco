@@ -2,9 +2,12 @@ const path = require("path");
 const router = require("express").Router();
 const apiRoutes = require("./api/user-routes");
 const product = require("./api/product");
+const cart = require("./api/cart");
 
 // API Routes
 router.use(apiRoutes);
+
+router.use(cart);
 
 // Product Controller
 router.use("/products", product);

@@ -2,6 +2,22 @@ const db = require("../models/Cart");
 
 // Defining methods for the cartsController
 module.exports = {
+  getCurrentUserCart: function (req, res){
+    const user = req.user;
+
+
+    db.find({
+      user_id: user._id
+
+    })
+    .where('order_id')
+    .equals(null)
+    .then((carts) => {
+
+      res.json(carts)
+    })
+
+  },
   findAll: function(req, res) {
     db
       .find(req.body)

@@ -9,15 +9,22 @@ const CartSchema = new Schema({
   }],
   order_id: {
     type: Schema.Types.ObjectId,
-    required: true,
+
     ref: "orders"
+  },
+  user_id: {
+    type: Schema.Types.ObjectId,
+    required: true,
+    ref: "User"
   }
-  // user_id: {
-  //   type: Schema.Types.ObjectId,
-  //   required: true,
-  //   ref: "User"
-  // }
 }, {timestamps: true});
+
+CartSchema.virtual('order', {
+  ref: "Order",
+  localField: 'order_id',
+  foreignField: 'cart_id',
+  justOne: true,
+})
 
 const Cart = mongoose.model("carts", CartSchema);
 

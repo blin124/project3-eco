@@ -14,4 +14,7 @@ router
   .put(cartsController.update)
   .delete(cartsController.remove);
 
+
+
+  router.get('/current-cart', cartsController.getCurrentUserCart)
 module.exports = router;

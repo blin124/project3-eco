@@ -4,7 +4,8 @@ const bcrypt = require("bcryptjs");
 const cors = require('cors');
 const jwt = require("jsonwebtoken");
 const keys = require("../../config/keys");
-const passport = require("passport");
+const passport = require("../../config/passport");
+const validator = require('validator');
 
 // Load input validation
 const validateRegisterInput = require("../../validation/register");
@@ -12,81 +13,118 @@ const validateLoginInput = require("../../validation/login");
 
 // Load User model
 const User = require("../../models/User");
-router.use(cors())
-process.env.SECRET_KEY = 'secret';
 
-router.post('/api/register', (req, res) => {
-    // Form validation
-    const { errors, isValid } = validateRegisterInput(req.body);
 
-    // Check validation
-    if (!isValid) {
-        return res.status(400).json(errors);
-    }
+router.post('/api/register', (req, res, next) => {
+    const validationErrors = [];
+  // validator is expecting a string
+  if (!validator.isEmail(req.body.email || ''))
+      validationErrors.push({ msg: "Please enter a valid email address." });
+  if (!validator.isLength(req.body.password || '', { min: 8 }))
+      validationErrors.push({
+          msg: "Password must be at least 8 characters long",
+      });
+  if (req.body.password !== req.body.password_again)
+      validationErrors.push({ msg: "Passwords do not match" });
 
-    User.findOne({
-        email: req.body.email
-    })
-    .then( response => {
-        if (response) {
-            res.status(400).json({ email: "Email already exists" });
-            return res.send("Email already exists");
-        }
-        else {
-            const today = new Date()
-            const userData = {
-                first_name: req.body.first_name,
-                last_name: req.body.last_name,
-                email: req.body.email,
-                password: req.body.password,
-                created: today
-            }
-            bcrypt.hash(req.body.password, 10, (err, hash) => {
-                if (err) throw err;
-                userData.password = hash
-                User.create(userData)
-                .then(user => {
-                    res.json(user);
-                })
-                .catch(err => {
-                    console.log(err);
-                })
-            })
-        }
-    })
+  if (validationErrors.length) {
+      return res.status(422).json({
+          errors: validationErrors,
+      })
+  }
+  req.body.email = validator.normalizeEmail(req.body.email, {
+      gmail_remove_dots: false,
+  });
+
+  const user = new User({
+      email: req.body.email,
+      password: req.body.password,
+  });
+
+  User.findOne({ email: req.body.email }, (err, existingUser) => {
+      if (err) {
+          return next(err);
+      }
+      if (existingUser) {
+          
+          return res.status(422).json({
+              errors: [
+                  {
+                      msg: "Account with that email address already exists.",
+                  },
+              ],
+          });
+      }
+      user.save((err) => {
+          if (err) {
+              return next(err);
+          }
+          req.logIn(user, (err) => {
+              if (err) {
+                  return next(err);
+              }
+              res.json({
+                  data: user
+              });
+          });
+      });
+  });
 })
 
-router.post('/api/login', (req, res) => {
-    User.findOne({
-        email: req.body.email
-    })
-        .then(response => {
-            if (response) {
-                if (bcrypt.compareSync(req.body.password, response.password)) {
-                    const payload = {
-                        _id: response._id,
-                        first_name: response.first_name,
-                        last_name: response.last_name,
-                        email: response.email
-                    }
-                    let token = jwt.sign(payload, process.env.SECRET_KEY, {
-                        // 1 year in seconds
-                        expiresIn: 31556926 
-                    })
-                    res.send(token)
-                }
-                else {
-                    res.status(400).json({ error: "User does not exist" });
-                }
+router.post('/api/login', (req, res, next) => {
+    // res.json({
+    //     data: req.user
+    // })
+
+    passport.authenticate('local', (err, user, info) => {
+        console.log({err});
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            return res.status(422).json({
+                errors: [
+                    {
+                        msg: info.msg,
+                    },
+                ],
+            });
+        }
+        console.log({user});
+        req.logIn(user, (err) => {
+            if(err){
+                return res.status(400).json({
+                    errors: [{msg: err}]
+                })
             }
-            else {
-                res.status(400).json({ error: "User does not exist" });
-            }
+            res.json({
+                data: user,
+            });
         })
-        .catch(err => {
-            res.send('error: ' + err);
-        })
+        
+    })(req, res, next);
 })
+
+router.get('/logout', (req, res, next) => {
+    req.logout();
+    req.session.destroy((err) => {
+        if (err){
+            res.json({
+                data: {
+                    error: "Failed to destroy the session during logout.",
+                    err,
+                },
+            });
+
+        }
+        req.user = null;
+        res.json({
+            data: {
+                message: 'success'
+            }
+        });
+    });
+});
 
 router.get('/api/profile', (req, res) => {
     var decoded = jwt.verify(req.headers['authorization'], process.env.SECRET_KEY)

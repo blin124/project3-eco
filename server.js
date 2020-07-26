@@ -1,12 +1,17 @@
 const express = require("express");
+const session = require("express-session");
 const cors = require('cors');
+const corsConfig = require('./config/cors');
 const logger = require("morgan");
+const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const routes = require("./routes");
 const passport = require("passport");
 const app = express();
 const dotenv = require("dotenv");
 const database = require('./config/database');
+const MongoStore = require("connect-mongo")(session);
+
 
 dotenv.config();
 
@@ -20,25 +25,42 @@ app.use(express.json());
 if (process.env.NODE_ENV === "production") {
     app.use(express.static("client/build"));
 }
+database(); // connect to db
+
+
+app.use(
+    session({
+        resave: true,
+        saveUninitialized: true,
+        secret: process.env.SESSION_SECRET,
+        cookie: {
+            secure: false, // not using https
+            maxAge: 1209600000,
+        }, // two weeks in milliseconds
+        store: new MongoStore({
+            url: process.env.MONGODB_URI,
+            autoReconnect: true,
+        }),
+    })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 
 // Bodyparser middleware
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors(corsConfig));
 app.use(
     bodyParser.urlencoded({
         extended: false
     })
 );
+app.use(cookieParser(process.env.SESSION_SECRET));
 
 app.use(express.static("public"));
 
-database(); // connect to db
-
-// Passport middleware
-app.use(passport.initialize());
-
-// Passport config
-require("./config/passport")(passport);
 
 // Routes
 app.use(routes);

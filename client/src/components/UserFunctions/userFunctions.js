@@ -26,6 +26,10 @@ export const loginUser = userData => {
     .post('/api/login', {
         email: userData.email,
         password: userData.password
+    }, {
+        headers: {
+            'content-type': 'application/json'
+        }
     })
     .then(res => {
         localStorage.setItem('usertoken', res.data);

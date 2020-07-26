@@ -3,20 +3,20 @@ const Schema = mongoose.Schema;
 
 // Create Schema
 const OrderSchema = new Schema({
-  // cart_id: {
-  //   type: Schema.Types.ObjectId,
-  //   ref: "cart",
-  //   required: true
-  // },
-  products: [{
-    type: mongoose.Schema.Types.Mixed,
-    ref: "products"
-  }],
-  user_id: {
+  cart_id: {
     type: Schema.Types.ObjectId,
-    required: true,
-    ref: "users"
+    ref: "cart",
+    required: true
   },
+  // products: [{
+  //   type: mongoose.Schema.Types.Mixed,
+  //   ref: "products"
+  // }],
+  // user_id: {
+  //   type: Schema.Types.ObjectId,
+  //   required: true,
+  //   ref: "users"
+  // },
   status: {
     type: String,
     required: true

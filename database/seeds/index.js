@@ -2,7 +2,7 @@ const connectDb = require('./../../config/database');
 const userSeeder = require('./userSeeder');
 const productSeeder = require('./productSeeder');
 const orderSeeder = require('./orderSeeder');
-// const cartSeeder = require('./cartSeeder');
+const cartSeeder = require('./cartSeeder');
 
 // connected to DB
 connectDb();
@@ -13,8 +13,8 @@ async function seed(){
 
     await userSeeder();
     await productSeeder();
+    await cartSeeder();
     await orderSeeder();
-    // await cartSeeder();
 
 }
 

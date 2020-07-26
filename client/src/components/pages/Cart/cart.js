@@ -36,13 +36,15 @@ function Cart(props) {
                     {/* link to id called all-carts
                     <a href="#all-carts">All carts</a> */}
                     <div className="row">
-                        
+                        {/* if (addToCartBtn == true) {
+                            
+                        } */}
                         <div className="col-sm-12">Carts
                         <table className="table table-bordered">
                             <thead>
                                 <tr>
-                                <th scope="col">Cart</th>
-                                <th scope="col">Description</th>
+                                <th scope="col">Product</th>
+                                <th scope="col">Quantity</th>
                                 <th scope="col">Price</th>
                                 </tr>
                             </thead>

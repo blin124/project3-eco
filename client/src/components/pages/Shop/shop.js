@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./style.css";
 import logo from '../../../images/logo.png';
-import shirt from '../../../images/redshirt.jpg';
+// import shirt from '../../../images/redshirt.jpg';
 import API from "../../../utils/API";
 import GlobalStore from "../../../utils/context/GlobalStore";
 
@@ -27,14 +27,14 @@ function Shop(props) {
 
   // products --
   // Loads all Products and sets them to Products
-    function loadProducts() {
-        // console.log( "hi this aint working");
+  function loadProducts() {
+    // console.log( "hi this aint working");
         API.getProducts()
         .then(res => 
             setProducts(res.data)
-        )
-        .catch(err => console.log(err));
-    };
+            )
+            .catch(err => console.log(err));
+        };
 
     function addToCart() {
         
@@ -82,17 +82,6 @@ function Shop(props) {
                             </tbody>
                             </table>
                         </div>
-                    </div>
-                </div>
-                <div className="row prow">
-                    <div className="col-sm-6">
-                    <img src={shirt} alt=""/>
-                    </div>
-                    <div className="col-sm-6">
-                        pid
-                        size + quantity dropdown
-                        price
-                        purchase quantity and confirm btn 
                     </div>
                 </div>
             </div>
