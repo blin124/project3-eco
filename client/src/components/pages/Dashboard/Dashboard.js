@@ -3,6 +3,7 @@ import jwt_decode from 'jwt-decode';
 import Sidebar from "../../Sidebar/Sidebar";
 import DashboardNewsCard from "../../DashboardNewsCard/DashboardNewsCard"
 import AdminCard from "../../AdminComponent/AdminCard"
+import axios from 'axios'
 
 
 class DashBoard extends Component {
@@ -17,13 +18,22 @@ class DashBoard extends Component {
     }
 
     componentDidMount() {
-        const token = localStorage.usertoken;
-        const decoded = jwt_decode(token);
-        this.setState({
-            first_name: decoded.first_name,
-            last_name: decoded.last_name,
-            email: decoded.email
-        })
+        axios.get('/api/current-user')
+            .then((response) => {
+                this.setState({
+                    first_name: response.data.first_name,
+                    last_name: response.data.last_name,
+                    email: response.data.email,
+                })
+            })
+
+        // const token = localStorage.usertoken;
+        // const decoded = jwt_decode(token);
+        // this.setState({
+        //     first_name: decoded.first_name,
+        //     last_name: decoded.last_name,
+        //     email: decoded.email
+        // })
     }
 
     renderPage = () => {

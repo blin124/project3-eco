@@ -24,8 +24,8 @@ router.post('/api/register', (req, res, next) => {
       validationErrors.push({
           msg: "Password must be at least 8 characters long",
       });
-  if (req.body.password !== req.body.password_again)
-      validationErrors.push({ msg: "Passwords do not match" });
+//   if (req.body.password !== req.body.password_again)
+//       validationErrors.push({ msg: "Passwords do not match" });
 
   if (validationErrors.length) {
       return res.status(422).json({
@@ -37,6 +37,8 @@ router.post('/api/register', (req, res, next) => {
   });
 
   const user = new User({
+      first_name: req.body.first_name,
+      last_name: req.body.last_name,
       email: req.body.email,
       password: req.body.password,
   });
@@ -125,6 +127,11 @@ router.get('/logout', (req, res, next) => {
         });
     });
 });
+
+
+router.get('/api/current-user', (req, res) => {
+    res.json(req.user);
+})
 
 router.get('/api/profile', (req, res) => {
     var decoded = jwt.verify(req.headers['authorization'], process.env.SECRET_KEY)
