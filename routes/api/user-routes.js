@@ -128,6 +128,11 @@ router.get('/logout', (req, res, next) => {
     });
 });
 
+
+router.get('/api/current-user', (req, res) => {
+    res.json(req.user);
+})
+
 router.get('/api/profile', (req, res) => {
     var decoded = jwt.verify(req.headers['authorization'], process.env.SECRET_KEY)
     User.findOne({
