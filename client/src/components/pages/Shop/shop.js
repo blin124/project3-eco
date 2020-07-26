@@ -4,6 +4,7 @@ import logo from '../../../images/logo.png';
 // import shirt from '../../../images/redshirt.jpg';
 import API from "../../../utils/API";
 import GlobalStore from "../../../utils/context/GlobalStore";
+import axios from "axios";
 
 function Shop(props) {
 
@@ -36,7 +37,16 @@ function Shop(props) {
             .catch(err => console.log(err));
         };
 
-    function addToCart() {
+    function addToCart(product) {
+
+        
+
+        axios.post('/api/carts/add-product', {
+            product_id: product._id
+        })
+            .then((cart) => {
+                console.log({cart});
+            })
         
     }
 
@@ -68,13 +78,12 @@ function Shop(props) {
                                 {/* {console.log(products)} */}
                                 {products.map(product => {
                                 return (
-                                    <tr>
+                                    <tr key={product._id}>
                                     <td scope="row">{product.name}</td>
                                     <td scope="row">description</td>
                                     <td scope="row">$ {product.price}</td>
                                     {store.auth.authState.isLoggedIn && (
-                                        <td scope="row"><button className="btn" onClick={addToCart}>Add to cart</button></td>
-                                   
+                                        <td scope="row"><button className="btn" onClick={() => addToCart(product)}>Add to cart</button></td>
                                     )}
                                     </tr>
                                 );

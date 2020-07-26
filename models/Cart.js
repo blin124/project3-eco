@@ -7,9 +7,8 @@ const CartSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "products"
   }],
-  order_id: {
+  order_id: {  // this is only available when cart is converted to an order
     type: Schema.Types.ObjectId,
-
     ref: "orders"
   },
   user_id: {
@@ -26,6 +25,17 @@ CartSchema.virtual('order', {
   justOne: true,
 })
 
+CartSchema.methods.addProduct = function addProduct(product_id){
+  if(!product_id){
+    throw new Error('this is not a product M8 !!!!!');
+  }
+  const id = mongoose.Types.ObjectId(product_id);
+  this.products.push(id)
+  return this.save()
+}
+
 const Cart = mongoose.model("carts", CartSchema);
+
+
 
 module.exports = Cart;
