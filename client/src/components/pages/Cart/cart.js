@@ -1,31 +1,30 @@
 import React, { useEffect, useState } from "react";
 // import "./style.css";
 import API from "../../../utils/API";
+import axios from 'axios';
 
 
 function Cart(props) {
 
-    const [carts, setCarts] = useState([])
-    const [formObject, setFormObject] = useState({})
-    const [count, setCount] = useState({})
+    const [cart, setCart] = useState({
+        products: []
+    })
 
 
   // Load all cart and store them with setCart
     useEffect(() => {
-        loadCarts()
-        setCount(1)
+        loadCurrentUserCart()
     }, [])
 
   // carts --
   // Loads all cart and sets them to cart
-    function loadCarts() {
-        console.log( "hi this aint working"
-        );
-        API.getCarts()
-        .then(res => 
-            setCarts(res.data)
-        )
-        .catch(err => console.log(err));
+    function loadCurrentUserCart() {
+        
+        axios.post('/api/carts/current-cart')
+            .then((res) => {
+                console.log({res});
+                setCart(res.data)
+            })
     };
 
         console.log(props);
@@ -50,13 +49,12 @@ function Cart(props) {
                             </thead>
                             <tbody>
                             {/* carts */}
-                                {console.log(carts)}
-                                {carts.map(cart => {
+                                {cart.products.map(product => {
                                 return (
                                     <tr>
-                                    <th scope="row">{cart.name}</th>
+                                    <th scope="row">{product.name}</th>
                                     <th scope="row">description</th>
-                                    <th scope="row">$ {cart.price}</th>
+                                    <th scope="row">$ {product.price}</th>
                                     </tr>
                                 );
                                 })}

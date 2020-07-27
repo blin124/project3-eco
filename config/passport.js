@@ -6,7 +6,7 @@ const { Strategy: LocalStrategy } = require("passport-local");
 
 passport.serializeUser((user, done) => {
   console.log('serialize user');
-  console.log({user});
+  // console.log({user});
   done(null, user.id);
 });
 
@@ -15,7 +15,7 @@ passport.deserializeUser((id, done) => {
 
     User.findById(id, (err, user) => {
         console.log('deserialise');
-        console.log({user});
+        // console.log({user});
         done(err, user);
     });
 });
@@ -32,7 +32,7 @@ passport.deserializeUser((id, done) => {
  * Sign in using Email and Password.
  */
 passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
-  console.log({email});
+  // console.log({email});
   User.findOne({ email }, (err, user) => {
     if (err) { return done(err); }
     if (!user) {

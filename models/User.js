@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const Schema = mongoose.Schema;
+const Cart = require('./Cart');
 
 // Create Schema
 const UserSchema = new Schema({
@@ -64,6 +65,36 @@ UserSchema.methods.comparePassword = function comparePassword(
     });
 };
 
+
+UserSchema.methods.latestCart = function latestCart(){
+  const user_id = this._id;
+
+  console.log({user_id});
+  return Cart.find({
+    user_id: user_id
+  })
+  .where('order_id')
+  .equals(null)
+  .then(async (carts) => {
+    if(carts.length === 0){
+      // create cart
+      const cart = new Cart({
+        user_id: user_id,
+      })
+      // then return the new cart
+      return await cart.save()
+    }
+
+    // get the first item  
+    // return the first item
+    return carts[0]
+  })
+  
+  
+
+
+
+}
 
 const User = mongoose.model("users", UserSchema);
 

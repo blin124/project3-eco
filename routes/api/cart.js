@@ -15,6 +15,7 @@ router
   .delete(cartsController.remove);
 
 
+router.post('/current-cart', cartsController.getCurrentUserCart)
+router.post('/add-product', cartsController.addToCart)
 
-  router.get('/current-cart', cartsController.getCurrentUserCart)
 module.exports = router;
