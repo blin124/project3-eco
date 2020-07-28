@@ -10,7 +10,7 @@ const passport = require("passport");
 const app = express();
 const dotenv = require("dotenv");
 const database = require('./config/database');
-const MongoStore = require("connect-mongo")(session);
+// const MongoStore = require("connect-mongo")(session);
 
 
 dotenv.config();
@@ -28,21 +28,21 @@ if (process.env.NODE_ENV === "production") {
 database(); // connect to db
 
 
-app.use(
-    session({
-        resave: true,
-        saveUninitialized: true,
-        secret: process.env.SESSION_SECRET,
-        cookie: {
-            secure: false, // not using https
-            maxAge: 1209600000,
-        }, // two weeks in milliseconds
-        store: new MongoStore({
-            url: process.env.MONGODB_URI,
-            autoReconnect: true,
-        }),
-    })
-);
+// app.use(
+//     session({
+//         resave: true,
+//         saveUninitialized: true,
+//         secret: process.env.SESSION_SECRET,
+//         cookie: {
+//             secure: false, // not using https
+//             maxAge: 1209600000,
+//         }, // two weeks in milliseconds
+//         store: new MongoStore({
+//             url: process.env.MONGODB_URI,
+//             autoReconnect: true,
+//         }),
+//     })
+// );
 
 app.use(passport.initialize());
 app.use(passport.session());
