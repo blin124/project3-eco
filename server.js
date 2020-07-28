@@ -1,7 +1,7 @@
 const express = require("express");
 const session = require("express-session");
-const cors = require('cors');
-const corsConfig = require('./config/cors');
+// const cors = require('cors');
+// const corsConfig = require('./config/cors');
 const logger = require("morgan");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
@@ -51,7 +51,7 @@ app.use(passport.session());
 
 // Bodyparser middleware
 app.use(bodyParser.json());
-app.use(cors(corsConfig));
+// app.use(cors(corsConfig));
 app.use(
     bodyParser.urlencoded({
         extended: false
